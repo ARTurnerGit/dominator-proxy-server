@@ -3,6 +3,11 @@ const axios = require("axios");
 
 const app = express();
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 app.get("/:gameNumber", (req, res) => {
   const { gameNumber } = req.params;
   const baseURL = "https://dominating12.com/game/";
@@ -10,8 +15,6 @@ app.get("/:gameNumber", (req, res) => {
   axios
     .get(baseURL + gameNumber)
     .then((axiosResponse) => {
-      console.log(Object.keys(axiosResponse));
-      console.log(typeof axiosResponse.data);
       res.status(200).send(axiosResponse.data);
     })
     .catch((err) =>
