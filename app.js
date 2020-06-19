@@ -12,9 +12,13 @@ app.get("/:gameNumber", (req, res) => {
     .then((axiosResponse) => {
       console.log(Object.keys(axiosResponse));
       console.log(typeof axiosResponse.data);
-      res.send(axiosResponse.data);
+      res.status(200).send(axiosResponse.data);
     })
-    .catch((err) => console.log(err));
+    .catch((err) =>
+      res
+        .status(500)
+        .send({ msg: "probably an issue with the proxy server", err })
+    );
 });
 
 const PORT = process.env.PORT || 9090;
