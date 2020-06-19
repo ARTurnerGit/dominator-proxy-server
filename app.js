@@ -15,7 +15,7 @@ app.get("/:gameNumber", (req, res) => {
   axios
     .get(baseURL + gameNumber)
     .then((axiosResponse) => {
-      res.json(axiosResponse.data);
+      res.send(axiosResponse.data);
     })
     .catch((err) =>
       res
