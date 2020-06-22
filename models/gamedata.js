@@ -33,3 +33,5 @@ exports.scrapeTerritoriesAndMapData = ({ gameNumber }) => {
     return { territories, map };
   });
 };
+
+exports.scrapeGamelog = ({ gameNumber }) => {};

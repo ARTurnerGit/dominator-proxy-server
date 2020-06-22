@@ -1,7 +1,13 @@
-const { scrapeTerritoriesAndMapData } = require("../models/gameData");
+const {
+  scrapeTerritoriesAndMapData,
+  scrapeGamelog,
+} = require("../models/gameData");
 
 exports.getGameData = (req, res, next) => {
-  const promises = [scrapeTerritoriesAndMapData(req.params)];
+  const promises = [
+    scrapeTerritoriesAndMapData(req.params),
+    scrapeGamelog(req.params),
+  ];
 
   Promise.all(promises)
     .then(([{ territories, map }]) => {
