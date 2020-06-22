@@ -8,5 +8,4 @@ app.use(setHeader);
 
 app.get("/:gameNumber", getGameData);
 
-const PORT = process.env.PORT || 9090;
-app.listen(PORT, console.log(`listening on ${PORT}...`));
+module.exports = app;
