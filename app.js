@@ -1,13 +1,11 @@
 const express = require("express");
 const axios = require("axios");
+const { setHeader } = require("./middleware/setHeader");
 const { JSDOM } = require("jsdom");
 
 const app = express();
-
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  next();
-});
+app.use(express.json());
+app.use(setHeader);
 
 app.get("/:gameNumber", (req, res) => {
   const { gameNumber } = req.params;
@@ -42,7 +40,7 @@ app.get("/:gameNumber", (req, res) => {
           };
         });
 
-      res.json({ territories, map });
+      res.status(200).json({ territories, map });
     })
     .catch((err) => {
       res
