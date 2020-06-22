@@ -24,7 +24,7 @@ exports.scrapeTerritoriesAndMapData = ({ gameNumber }) => {
         let ypos = element.getAttribute("data-y");
         territories[name] = {
           owner: "",
-          territories: 3,
+          troops: 3,
           xpos,
           ypos,
           highlighted: false,
