@@ -49,6 +49,18 @@ exports.scrapeGamelogAndPlayerColours = ({ gameNumber }) => {
           let message = document
             .querySelector(".chat-message-body")
             .textContent.trim();
+          if (/joined the game/.test(message)) {
+            let [playerName] = message.split(" ");
+            let newPlayer = {};
+            let link = document.querySelector("a");
+            newPlayer.colour = link.classList[1];
+            newPlayer.playerURL = link.href;
+            newPlayer.cards = 0;
+            newPlayer.territories = 0;
+            newPlayer.troops = 0;
+            newPlayer.hidden = false;
+            Object.assign(players, { [playerName]: newPlayer });
+          }
           gamelog.push(message);
         });
       } catch (err) {
