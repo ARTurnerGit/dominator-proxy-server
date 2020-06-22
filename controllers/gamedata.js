@@ -1,9 +1,11 @@
 const { scrapeTerritoriesAndMapData } = require("../models/gameData");
 
 exports.getGameData = (req, res, next) => {
-  scrapeTerritoriesAndMapData(req.params)
-    .then((obj) => {
-      res.status(200).json(obj);
+  const promises = [scrapeTerritoriesAndMapData(req.params)];
+
+  Promise.all(promises)
+    .then(([{ territories, map }]) => {
+      res.status(200).json({ territories, map });
     })
     .catch((err) => {
       res
