@@ -1,7 +1,7 @@
 const {
   scrapeTerritoriesAndMapData,
   scrapeGamelogAndPlayerColours,
-} = require("../models/gameData.js");
+} = require("../models/gamedata.js");
 
 exports.getGreeting = (req, res, next) => {
   res
