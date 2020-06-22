@@ -1,6 +1,6 @@
 const express = require("express");
-const { setHeader } = require("./middleware/setHeader");
-const { getGameData, getGreeting } = require("./controllers/gameData");
+const { setHeader } = require("./middleware/setHeader.js");
+const { getGameData, getGreeting } = require("./controllers/gameData.js");
 
 const app = express();
 app.use(express.json());
