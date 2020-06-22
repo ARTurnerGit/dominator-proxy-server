@@ -1,6 +1,8 @@
 const axios = require("axios");
 const { JSDOM } = require("jsdom");
 
+// need to figure out which of these bits is taking the longest - almost certainly the game log section with the creation of hundreds of minidoms. May be better off using that DOM parser for it's speed on that one
+
 exports.scrapeTerritoriesAndMapData = ({ gameNumber }) => {
   const baseURL = "https://dominating12.com/game/";
 
