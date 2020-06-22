@@ -34,4 +34,4 @@ exports.scrapeTerritoriesAndMapData = ({ gameNumber }) => {
   });
 };
 
-exports.scrapeGamelog = ({ gameNumber }) => {};
+exports.scrapeGamelogAndPlayerColours = ({ gameNumber }) => {};

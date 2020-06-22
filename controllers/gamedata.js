@@ -6,7 +6,7 @@ const {
 exports.getGameData = (req, res, next) => {
   const promises = [
     scrapeTerritoriesAndMapData(req.params),
-    scrapeGamelog(req.params),
+    scrapeGamelogAndPlayerColours(req.params),
   ];
 
   Promise.all(promises)
