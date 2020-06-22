@@ -4,8 +4,8 @@ const { JSDOM } = require("jsdom");
 exports.scrapeTerritoriesAndMapData = ({ gameNumber }) => {
   const baseURL = "https://dominating12.com/game/";
 
-  return axios.get(baseURL + gameNumber).then((axiosResponse) => {
-    const { document } = new JSDOM(axiosResponse.data).window;
+  return axios.get(baseURL + gameNumber).then(({ data }) => {
+    const { document } = new JSDOM(data).window;
 
     let mapStyle = document.getElementById("map").style;
     let map = {
@@ -34,4 +34,26 @@ exports.scrapeTerritoriesAndMapData = ({ gameNumber }) => {
   });
 };
 
-exports.scrapeGamelogAndPlayerColours = ({ gameNumber }) => {};
+exports.scrapeGamelogAndPlayerColours = ({ gameNumber }) => {
+  const requestURL = `https://dominating12.com/game/${gameNumber}/play/load-full-log?before=1000000000`;
+
+  return axios
+    .post(requestURL, {}, { responseType: "json", responseEncoding: "utf8" })
+    .then(({ data }) => {
+      let gamelog = [];
+      let players = {};
+
+      try {
+        Object.values(data.log).forEach((HTMLString) => {
+          const { document } = new JSDOM(HTMLString).window;
+          let message = document
+            .querySelector(".chat-message-body")
+            .textContent.trim();
+          gamelog.push(message);
+        });
+      } catch (err) {
+        console.log(err);
+      }
+      return { gamelog, players };
+    });
+};

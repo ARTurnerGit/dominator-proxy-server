@@ -1,6 +1,6 @@
 const {
   scrapeTerritoriesAndMapData,
-  scrapeGamelog,
+  scrapeGamelogAndPlayerColours,
 } = require("../models/gameData");
 
 exports.getGameData = (req, res, next) => {
@@ -10,8 +10,8 @@ exports.getGameData = (req, res, next) => {
   ];
 
   Promise.all(promises)
-    .then(([{ territories, map }]) => {
-      res.status(200).json({ territories, map });
+    .then(([{ territories, map }, { gamelog, players }]) => {
+      res.status(200).json({ territories, map, gamelog, players });
     })
     .catch((err) => {
       res
