@@ -3,6 +3,12 @@ const {
   scrapeGamelogAndPlayerColours,
 } = require("../models/gameData");
 
+exports.getGreeting = (req, res, next) => {
+  res
+    .status(200)
+    .json({ msg: "welcome to the dominating 12 visualiser proxy server" });
+};
+
 exports.getGameData = (req, res, next) => {
   const promises = [
     scrapeTerritoriesAndMapData(req.params),
