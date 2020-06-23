@@ -28,6 +28,20 @@ exports.scrapeTerritories = ({ baseUrl }) => {
   });
 };
 
+exports.scrapeMap = ({ baseUrl }) => {
+  const dominating12 = "https://dominating12.com/game";
+  return axios.get(dominating12 + baseUrl).then(({ data }) => {
+    const { document } = new JSDOM(data).window;
+    let mapStyle = document.getElementById("map").style;
+    let map = {
+      url: mapStyle.backgroundImage.slice(4, -1),
+      width: mapStyle.width,
+      height: mapStyle.height,
+    };
+    return map;
+  });
+};
+
 exports.scrapeTerritoriesAndMapData = ({ gameNumber }) => {
   const baseURL = "https://dominating12.com/game/";
 
