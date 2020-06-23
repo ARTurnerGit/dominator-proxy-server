@@ -73,6 +73,31 @@ exports.scrapePlayers = ({ baseUrl }) => {
   });
 };
 
+exports.scrapeGamelog = ({ baseUrl }) => {
+  const requestURL = `https://dominating12.com/game${baseUrl}/play/load-full-log?before=1000000000`;
+
+  return axios
+    .post(requestURL, {}, { responseType: "json", responseEncoding: "utf8" })
+    .then(({ data }) => {
+      let gamelog = [];
+      let players = {};
+
+      try {
+        Object.values(data.log).forEach((HTMLString) => {
+          const { document } = new JSDOM(HTMLString).window;
+          let message = document
+            .querySelector(".chat-message-body")
+            .textContent.trim();
+
+          gamelog.push(message);
+        });
+      } catch (err) {
+        console.log(err);
+      }
+      return gamelog;
+    });
+};
+
 exports.scrapeTerritoriesAndMapData = ({ gameNumber }) => {
   const baseURL = "https://dominating12.com/game/";
 
