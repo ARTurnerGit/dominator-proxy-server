@@ -1,12 +1,13 @@
 const express = require("express");
-const { setHeader } = require("./middleware/setHeader.js");
-const { getGameData, getGreeting } = require("./controllers/gamedata.js");
+const { setHeader } = require("./middleware/setHeader");
+const gameNumberRouter = require("./routers/gameNumber");
+const otherRouter = require("./routers/other");
 
 const app = express();
 app.use(express.json());
 app.use(setHeader);
 
-app.get("/", getGreeting);
-app.get("/:gameNumber", getGameData);
+app.use("/:gameNumber", gameNumberRouter);
+app.use("*", otherRouter);
 
 module.exports = app;

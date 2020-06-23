@@ -3,6 +3,31 @@ const { JSDOM } = require("jsdom");
 
 // need to figure out which of these bits is taking the longest - almost certainly the game log section with the creation of hundreds of minidoms. May be better off using that DOM parser for it's speed on that one
 
+exports.scrapeTerritories = ({ baseUrl }) => {
+  const dominating12 = "https://dominating12.com/game";
+  return axios.get(dominating12 + baseUrl).then(({ data }) => {
+    const { document } = new JSDOM(data).window;
+
+    let territories = {};
+    document
+      .querySelector("#map")
+      .querySelectorAll("a")
+      .forEach((element) => {
+        let name = element.getAttribute("data-name");
+        let xpos = element.getAttribute("data-x");
+        let ypos = element.getAttribute("data-y");
+        territories[name] = {
+          owner: "",
+          troops: 3,
+          xpos,
+          ypos,
+          highlighted: false,
+        };
+      });
+    return territories;
+  });
+};
+
 exports.scrapeTerritoriesAndMapData = ({ gameNumber }) => {
   const baseURL = "https://dominating12.com/game/";
 

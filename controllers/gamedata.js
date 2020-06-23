@@ -1,12 +1,17 @@
 const {
+  scrapeTerritories,
   scrapeTerritoriesAndMapData,
   scrapeGamelogAndPlayerColours,
 } = require("../models/gamedata.js");
 
-exports.getGreeting = (req, res, next) => {
-  res
-    .status(200)
-    .json({ msg: "welcome to the dominating 12 visualiser proxy server" });
+exports.getAllTerritories = (req, res, next) => {
+  scrapeTerritories(req)
+    .then((territories) => res.status(200).json({ territories }))
+    .catch((err) => {
+      res
+        .status(500)
+        .send({ msg: "probably an issue with the proxy server", err });
+    });
 };
 
 exports.getGameData = (req, res, next) => {
