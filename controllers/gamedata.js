@@ -2,8 +2,6 @@ const {
   scrapeTerritories,
   scrapeMap,
   scrapePlayers,
-  scrapeTerritoriesAndMapData,
-  scrapeGamelogAndPlayerColours,
   scrapeGamelog,
 } = require("../models/gamedata.js");
 
@@ -40,23 +38,6 @@ exports.getAllPlayers = (req, res, next) => {
 exports.getGamelog = (req, res, next) => {
   scrapeGamelog(req)
     .then((gamelog) => res.status(200).json({ gamelog }))
-    .catch((err) => {
-      res
-        .status(500)
-        .send({ msg: "probably an issue with the proxy server", err });
-    });
-};
-
-exports.getGameData = (req, res, next) => {
-  const promises = [
-    scrapeTerritoriesAndMapData(req.params),
-    scrapeGamelogAndPlayerColours(req.params),
-  ];
-
-  Promise.all(promises)
-    .then(([{ territories, map }, { gamelog, players }]) => {
-      res.status(200).json({ territories, map, gamelog, players });
-    })
     .catch((err) => {
       res
         .status(500)
