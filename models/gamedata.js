@@ -1,8 +1,10 @@
 const axios = require("axios");
 const { JSDOM } = require("jsdom");
+const { parse } = require("node-html-parser");
 
 exports.scrapeTerritories = ({ baseUrl }) => {
   const dominating12 = "https://dominating12.com/game";
+
   return axios.get(dominating12 + baseUrl).then(({ data }) => {
     const { document } = new JSDOM(data).window;
     let territories = {};
@@ -28,6 +30,7 @@ exports.scrapeTerritories = ({ baseUrl }) => {
 
 exports.scrapeMap = ({ baseUrl }) => {
   const dominating12 = "https://dominating12.com/game";
+
   return axios.get(dominating12 + baseUrl).then(({ data }) => {
     const { document } = new JSDOM(data).window;
     let mapStyle = document.getElementById("map").style;
@@ -42,6 +45,7 @@ exports.scrapeMap = ({ baseUrl }) => {
 
 exports.scrapePlayers = ({ baseUrl }) => {
   const dominating12 = "https://dominating12.com/game";
+
   return axios.get(dominating12 + baseUrl).then(({ data }) => {
     const { document } = new JSDOM(data).window;
     let players = {};
@@ -81,14 +85,23 @@ exports.scrapeGamelog = ({ baseUrl }) => {
       let players = {};
 
       try {
+        // node-html-parser takes about 1 second to respond on game 997721 - we'll use this
         Object.values(data.log).forEach((HTMLString) => {
-          const { document } = new JSDOM(HTMLString).window;
-          let message = document
-            .querySelector(".chat-message-body")
-            .textContent.trim();
+          const html = parse(HTMLString);
+          let message = html.querySelector(".chat-message-body").text.trim();
 
           gamelog.push(message);
         });
+
+        // jsdom takes about 7 seconds to respond on game 997721
+        // Object.values(data.log).forEach((HTMLString) => {
+        //   const { document } = new JSDOM(HTMLString).window;
+        //   let message = document
+        //     .querySelector(".chat-message-body")
+        //     .textContent.trim();
+
+        //   gamelog.push(message);
+        // });
       } catch (err) {
         console.log(err);
       }
