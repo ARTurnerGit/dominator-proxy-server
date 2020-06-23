@@ -1,6 +1,7 @@
 const {
   scrapeTerritories,
   scrapeMap,
+  scrapePlayers,
   scrapeTerritoriesAndMapData,
   scrapeGamelogAndPlayerColours,
 } = require("../models/gamedata.js");
@@ -18,6 +19,16 @@ exports.getAllTerritories = (req, res, next) => {
 exports.getMap = (req, res, next) => {
   scrapeMap(req)
     .then((map) => res.status(200).json({ map }))
+    .catch((err) => {
+      res
+        .status(500)
+        .send({ msg: "probably an issue with the proxy server", err });
+    });
+};
+
+exports.getAllPlayers = (req, res, next) => {
+  scrapePlayers(req)
+    .then((players) => res.status(200).json({ players }))
     .catch((err) => {
       res
         .status(500)

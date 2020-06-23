@@ -7,8 +7,8 @@ exports.scrapeTerritories = ({ baseUrl }) => {
   const dominating12 = "https://dominating12.com/game";
   return axios.get(dominating12 + baseUrl).then(({ data }) => {
     const { document } = new JSDOM(data).window;
-
     let territories = {};
+
     document
       .querySelector("#map")
       .querySelectorAll("a")
@@ -39,6 +39,37 @@ exports.scrapeMap = ({ baseUrl }) => {
       height: mapStyle.height,
     };
     return map;
+  });
+};
+
+exports.scrapePlayers = ({ baseUrl }) => {
+  const dominating12 = "https://dominating12.com/game";
+  return axios.get(dominating12 + baseUrl).then(({ data }) => {
+    const { document } = new JSDOM(data).window;
+    let players = {};
+    let numberOfPlayers = document.getElementsByClassName("player-list")[0]
+      .childNodes[1].childElementCount;
+
+    for (let i = 1; i <= numberOfPlayers; i++) {
+      let playerName = document
+        .querySelector(`#playerrow-${i} .name`)
+        .textContent.trim();
+
+      players[playerName] = {
+        colour:
+          "player-" +
+          document
+            .querySelector(`#playerrow-${i} .color img`)
+            .src.slice(-5, -4),
+        playerURL: document.querySelector(`#playerrow-${i} .name a`).href,
+        cards: 0,
+        territories: 0,
+        troops: 0,
+        hidden: false,
+      };
+    }
+
+    return players;
   });
 };
 
