@@ -14,13 +14,12 @@ exports.scrapeTerritories = ({ baseUrl }) => {
       .querySelectorAll("a")
       .forEach((element) => {
         let name = element.getAttribute("data-name");
-        let xpos = element.getAttribute("data-x");
-        let ypos = element.getAttribute("data-y");
+
         territories[name] = {
           owner: "",
           troops: 3,
-          xpos,
-          ypos,
+          xpos: element.getAttribute("data-x"),
+          ypos: element.getAttribute("data-y"),
           highlighted: false,
         };
       });
@@ -34,6 +33,7 @@ exports.scrapeMap = ({ baseUrl }) => {
   return axios.get(dominating12 + baseUrl).then(({ data }) => {
     const { document } = new JSDOM(data).window;
     let mapStyle = document.getElementById("map").style;
+
     let map = {
       url: mapStyle.backgroundImage.slice(4, -1),
       width: mapStyle.width,
