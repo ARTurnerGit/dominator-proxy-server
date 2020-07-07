@@ -1,6 +1,7 @@
 const axios = require("axios");
 const { JSDOM } = require("jsdom");
 const { parse } = require("node-html-parser");
+const he = require("he");
 
 exports.scrapeTerritories = ({ baseUrl }) => {
   const dominating12 = "https://dominating12.com/game";
@@ -14,6 +15,7 @@ exports.scrapeTerritories = ({ baseUrl }) => {
       .querySelectorAll("a")
       .forEach((element) => {
         let name = element.getAttribute("data-name");
+        name = he.encode(he.decode(name), { decimal: true });
 
         territories[name] = {
           owner: "",
