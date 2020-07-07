@@ -15,6 +15,7 @@ exports.scrapeTerritories = ({ baseUrl }) => {
       .querySelectorAll("a")
       .forEach((element) => {
         let name = element.getAttribute("data-name");
+        name = he.encode(he.decode(name), { decimal: true });
 
         territories[name] = {
           owner: "",
