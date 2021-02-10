@@ -3,6 +3,7 @@ const {
   scrapeMap,
   scrapePlayers,
   scrapeGamelog,
+  fetchInitialDistribution,
 } = require("../models/gamedata.js");
 
 exports.getAllTerritories = (req, res, next) => {
@@ -43,4 +44,10 @@ exports.getGamelog = (req, res, next) => {
         .status(500)
         .send({ msg: "probably an issue with the proxy server", err });
     });
+};
+
+exports.getInitialDistribution = (req, res, next) => {
+  return fetchInitialDistribution(req)
+    .then(({ data }) => res.status(200).json(data))
+    .catch((err) => res.status(500).send({ msg: "working on it" }));
 };

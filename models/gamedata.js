@@ -110,3 +110,8 @@ exports.scrapeGamelog = ({ baseUrl }) => {
       return gamelog;
     });
 };
+
+exports.fetchInitialDistribution = ({ baseUrl }) => {
+  const requestURL = `https://dominating12.com/api/game${baseUrl}/initial-state`;
+  return axios.get(requestURL);
+};
